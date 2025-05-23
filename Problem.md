@@ -1,5 +1,3 @@
-Please conduct an in-depth and detailed investigation at a PhD-level of expertise. You are required to research and develop the best, most optimal, most powerful, fastest, and most superior algorithmic solution to address this problem. Document your research findings in a LaTeX report.
-
 ## Maximum-Weight Clique Partition Challenge
 
 ### Description
