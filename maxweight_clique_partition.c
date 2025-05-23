@@ -17,8 +17,9 @@
  * Check if two nodes are connected
  */
 int are_connected(int** weights, int u, int v) {
+    static int temp;
     if (u == v) return 1;
-    if (u > v) { int temp = u; u = v; v = temp; }
+    if (u > v) { temp = u; u = v; v = temp; }
     return weights[u][v] != NO_EDGE;
 }
 
@@ -38,11 +39,14 @@ int** maxWeightCliquePartition(int** weights, int n, int k, int* partition_size,
         return NULL;
     }
     
+    int i, j, can_merge, a, b, new_size, shift;
+    int* new_clique;
+    
     // Initialize single-node cliques
-    for (int i = 0; i < n; i++) {
+    for (i = 0; i < n; ++i) {
         partition[i] = (int*)malloc(sizeof(int));
         if (!partition[i]) {
-            for (int j = 0; j < i; j++) free(partition[j]);
+            for (j = 0; j < i; ++j) free(partition[j]);
             free(partition);
             free(*clique_sizes);
             return NULL;
@@ -52,17 +56,17 @@ int** maxWeightCliquePartition(int** weights, int n, int k, int* partition_size,
     }
     
     *partition_size = n;
-    
+
     // Try to merge cliques greedily (simple approach)
-    for (int i = 0; i < *partition_size - 1; i++) {
-        for (int j = i + 1; j < *partition_size; j++) {
+    for (i = 0; i < *partition_size - 1; ++i) {
+        for (j = i + 1; j < *partition_size; ++j) {
             // Check if cliques i and j can be merged
             if ((*clique_sizes)[i] + (*clique_sizes)[j] <= k) {
-                int can_merge = 1;
+                  can_merge = 1;
                 
                 // Check if all pairs are connected
-                for (int a = 0; a < (*clique_sizes)[i] && can_merge; a++) {
-                    for (int b = 0; b < (*clique_sizes)[j] && can_merge; b++) {
+                for (a = 0; a < (*clique_sizes)[i] && can_merge; a++) {
+                    for (b = 0; b < (*clique_sizes)[j] && can_merge; b++) {
                         if (!are_connected(weights, partition[i][a], partition[j][b])) {
                             can_merge = 0;
                         }
@@ -71,16 +75,16 @@ int** maxWeightCliquePartition(int** weights, int n, int k, int* partition_size,
                 
                 if (can_merge) {
                     // Merge j into i
-                    int new_size = (*clique_sizes)[i] + (*clique_sizes)[j];
-                    int* new_clique = (int*)malloc(new_size * sizeof(int));
+                      new_size = (*clique_sizes)[i] + (*clique_sizes)[j];
+                      new_clique = (int*)malloc(new_size * sizeof(int));
                     
                     if (new_clique) {
                         // Copy from clique i
-                        for (int a = 0; a < (*clique_sizes)[i]; a++) {
+                        for (a = 0; a < (*clique_sizes)[i]; a++) {
                             new_clique[a] = partition[i][a];
                         }
                         // Copy from clique j
-                        for (int b = 0; b < (*clique_sizes)[j]; b++) {
+                        for (b = 0; b < (*clique_sizes)[j]; b++) {
                             new_clique[(*clique_sizes)[i] + b] = partition[j][b];
                         }
                         
@@ -91,12 +95,12 @@ int** maxWeightCliquePartition(int** weights, int n, int k, int* partition_size,
                         
                         // Remove clique j
                         free(partition[j]);
-                        for (int shift = j; shift < *partition_size - 1; shift++) {
+                        for (shift = j; shift < *partition_size - 1; shift++) {
                             partition[shift] = partition[shift + 1];
                             (*clique_sizes)[shift] = (*clique_sizes)[shift + 1];
                         }
-                        (*partition_size)--;
-                        j--; // Recheck this position
+                        --(*partition_size);
+                        --j; // Recheck this position
                     }
                 }
             }

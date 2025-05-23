@@ -17,9 +17,9 @@ int main() {
     printf("Test 1: Triangle graph\n");
     int n = 3, k = 3;
     int** weights = (int**)malloc(n * sizeof(int*));
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; ++i) {
         weights[i] = (int*)malloc(n * sizeof(int));
-        for (int j = 0; j < n; j++) {
+        for (int j = 0; j < n; ++j) {
             weights[i][j] = (i == j) ? 0 : NO_EDGE;
         }
     }
@@ -37,15 +37,15 @@ int main() {
         printf("SUCCESS: Found %d cliques\n", partition_size);
         
         double total_weight = 0.0;
-        for (int i = 0; i < partition_size; i++) {
+        for (int i = 0; i < partition_size; ++i) {
             printf("Clique %d: ", i);
-            for (int j = 0; j < clique_sizes[i]; j++) {
+            for (int j = 0; j < clique_sizes[i]; ++j) {
                 printf("%d ", partition[i][j]);
             }
             
             double clique_weight = 0.0;
-            for (int j = 0; j < clique_sizes[i]; j++) {
-                for (int k = j + 1; k < clique_sizes[i]; k++) {
+            for (int j = 0; j < clique_sizes[i]; ++j) {
+                for (int k = j + 1; k < clique_sizes[i]; ++k) {
                     int u = partition[i][j];
                     int v = partition[i][k];
                     if (u > v) { int temp = u; u = v; v = temp; }
@@ -62,7 +62,7 @@ int main() {
         printf("Total weight: %.2f, Average: %.6f\n", total_weight, total_weight / n);
         
         // Clean up
-        for (int i = 0; i < partition_size; i++) {
+        for (int i = 0; i < partition_size; ++i) {
             free(partition[i]);
         }
         free(partition);
@@ -74,7 +74,7 @@ int main() {
     }
     
     // Clean up weights
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; ++i) {
         free(weights[i]);
     }
     free(weights);
@@ -83,9 +83,9 @@ int main() {
     printf("Test 2: Sample case (5 nodes)\n");
     n = 5; k = 4;
     weights = (int**)malloc(n * sizeof(int*));
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; ++i) {
         weights[i] = (int*)malloc(n * sizeof(int));
-        for (int j = 0; j < n; j++) {
+        for (int j = 0; j < n; ++j) {
             weights[i][j] = (i == j) ? 0 : NO_EDGE;
         }
     }
@@ -105,15 +105,15 @@ int main() {
         printf("SUCCESS: Found %d cliques\n", partition_size);
         
         double total_weight = 0.0;
-        for (int i = 0; i < partition_size; i++) {
+        for (int i = 0; i < partition_size; ++i) {
             printf("Clique %d: ", i);
-            for (int j = 0; j < clique_sizes[i]; j++) {
+            for (int j = 0; j < clique_sizes[i]; ++j) {
                 printf("%d ", partition[i][j]);
             }
             
             double clique_weight = 0.0;
-            for (int j = 0; j < clique_sizes[i]; j++) {
-                for (int k = j + 1; k < clique_sizes[i]; k++) {
+            for (int j = 0; j < clique_sizes[i]; ++j) {
+                for (int k = j + 1; k < clique_sizes[i]; ++k) {
                     int u = partition[i][j];
                     int v = partition[i][k];
                     if (u > v) { int temp = u; u = v; v = temp; }
@@ -130,7 +130,7 @@ int main() {
         printf("Total weight: %.2f, Average: %.6f\n", total_weight, total_weight / n);
         
         // Clean up
-        for (int i = 0; i < partition_size; i++) {
+        for (int i = 0; i < partition_size; ++i) {
             free(partition[i]);
         }
         free(partition);
@@ -142,7 +142,7 @@ int main() {
     }
     
     // Clean up weights
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; ++i) {
         free(weights[i]);
     }
     free(weights);
